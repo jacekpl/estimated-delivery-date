@@ -1,0 +1,22 @@
+{
+    "name": "jacekpl/estimated-delivery-date",
+    "description": "Shows estimated delivery date based on some rules",
+    "require": {
+        "nesbot/carbon": "^1.21"
+    },
+    "license": "MIT",
+    "autoload": {
+	    "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jacek Różański",
+            "email": "jacek@opcode.pl"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    }
+}
