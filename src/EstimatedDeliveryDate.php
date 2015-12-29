@@ -12,10 +12,10 @@ class EstimatedDeliveryDate
     private $preparationDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
     private $deliveryDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
 
-    public function __construct($currentDate)
+    public function __construct($currentDate, $format = 'Y-m-d')
     {
         $date = new DateTimeImmutable();
-        $this->currentDate = $date->createFromFormat('Y-m-d', $currentDate, new DateTimeZone('UTC'));
+        $this->currentDate = $date->createFromFormat($format, $currentDate, new DateTimeZone('UTC'));
     }
 
     public function delivery($min, $max)
@@ -24,9 +24,16 @@ class EstimatedDeliveryDate
         $this->deliveryMax = $max;
     }
 
-    public function preparation($days)
+    public function preparation($hour, $before, $after)
     {
-        $this->preparation = $days;
+        $date = new DateTimeImmutable();
+        $preparationHour = $date->createFromFormat('H:i', $hour, new DateTimeZone('UTC'));
+
+        $this->preparation = $after;
+
+        if($this->currentDate->format('H:i') < $preparationHour->format(('H:i'))) {
+            $this->preparation = $before;
+        }
     }
 
     public function vacations(array $vacations)
