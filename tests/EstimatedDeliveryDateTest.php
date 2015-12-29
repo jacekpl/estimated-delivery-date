@@ -97,4 +97,16 @@ class EstimatedDeliveryDateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($deliveryDate, $estimatedDeliveryDate->estimation());
     }
+
+    public function testFormat()
+    {
+        $deliveryDate = [
+            'min' => "2015-12-28",
+            'max' => "2015-12-29"
+        ];
+
+        $estimatedDeliveryDate = new EstimatedDeliveryDate();
+
+        $this->assertEquals('lundi 28 décembre 2015 / mardi 29 décembre 2015', $estimatedDeliveryDate->formatDate($deliveryDate));
+    }
 }
