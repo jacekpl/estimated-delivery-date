@@ -8,6 +8,7 @@ class EstimatedDeliveryDate
     private $deliveryMax = 0;
     private $preparation = 0;
     private $vacations = [];
+    private $deliveryVacations = [];
     private $preparationDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
     private $deliveryDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
 
@@ -29,6 +30,11 @@ class EstimatedDeliveryDate
     }
 
     public function vacations(array $vacations)
+    {
+        $this->vacations = $vacations;
+    }
+
+    public function deliveryVacations(array $vacations)
     {
         $this->vacations = $vacations;
     }
@@ -79,8 +85,9 @@ class EstimatedDeliveryDate
         for($i=0;; $i++) {
             $calendarDay = $date->modify('+' . $i . ' days');
 
-
-            if(!in_array($calendarDay->format('N'), $this->deliveryDaysOfWeek)) {
+            if(in_array($calendarDay->format('Y-m-d'), $this->deliveryVacations)) {
+                continue;
+            } elseif(!in_array($calendarDay->format('N'), $this->deliveryDaysOfWeek)) {
                 continue;
             }
 

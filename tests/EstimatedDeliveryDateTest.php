@@ -65,4 +65,20 @@ class EstimatedDeliveryDateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($deliveryDate, $estimatedDeliveryDate->estimation());
     }
+
+    public function testDeliveryAndPreparationWithDeliveryVacations()
+    {
+        $currentDate = "2016-01-04";
+        $estimatedDeliveryDate = new EstimatedDeliveryDate($currentDate);
+        $estimatedDeliveryDate->delivery(0, 1);
+        $estimatedDeliveryDate->preparation(5);
+        $estimatedDeliveryDate->deliveryVacations(['2016-01-06']);
+
+        $deliveryDate = [
+            'min' => "2016-01-12",
+            'max' => "2016-01-13"
+        ];
+
+        $this->assertEquals($deliveryDate, $estimatedDeliveryDate->estimation());
+    }
 }
