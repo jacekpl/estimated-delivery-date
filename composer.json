@@ -1,9 +1,6 @@
 {
     "name": "jacekpl/estimated-delivery-date",
     "description": "Shows estimated delivery date based on some rules",
-    "require": {
-        "nesbot/carbon": "^1.21"
-    },
     "license": "MIT",
     "autoload": {
 	    "psr-4": {
