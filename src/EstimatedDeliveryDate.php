@@ -124,7 +124,7 @@ class EstimatedDeliveryDate
 
         for($i=0;; $i++) {
             $date = clone $dateObj;
-            
+
             $calendarDay = $date->modify('+' . $i . ' days');
 
             if(in_array($calendarDay->format('Y-m-d'), $this->vacations)) {
