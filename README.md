@@ -10,18 +10,18 @@ $estimatedDeliveryDate->preparation('17:00', 4, 5); //preparation time, days nee
 $estimatedDeliveryDate->preparationDaysOfWeek(1, 2, 3, 4, 5, 6);
 $estimatedDeliveryDate->delivery(0, 1); //days min/max for delivery
 $estimatedDeliveryDate->deliveryDaysOfWeek(1, 2, 3, 4, 5, 6);
-$estimatedDeliveryDate->vacations(['2016-01-05']); //sender not working days
-$estimatedDeliveryDate->deliveryVacations(['2016-01-06']); //delivery not working days
+$estimatedDeliveryDate->vacations(array('2016-01-05')); //sender not working days
+$estimatedDeliveryDate->deliveryVacations(array('2016-01-06')); //delivery not working days
 
 $deliveryDate = $estimatedDeliveryDate->estimation(); //returns array
 ```
 
 Estimation returns array:
 ```
-$deliveryDate = [
+$deliveryDate = array(
   'min' => "2015-12-28",
   'max' => "2015-12-29"
-];
+);
 ```
 
 You can format that date (French translation):
