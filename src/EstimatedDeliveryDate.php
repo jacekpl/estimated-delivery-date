@@ -5,7 +5,7 @@ class EstimatedDeliveryDate
     /**
      * Current date
      * Based on provided date script makes estimations
-     * @var  DateTimeImmutable $currentDate
+     * @var DateTimemutable $currentDate
      */
     private $currentDate;
 
@@ -53,7 +53,7 @@ class EstimatedDeliveryDate
 
     public function __construct($currentDate = 'now', $format = 'Y-m-d')
     {
-        $date = new DateTimeImmutable();
+        $date = new DateTime();
         $this->currentDate = $date->createFromFormat($format, $currentDate, new DateTimeZone('UTC'));
     }
 
@@ -65,7 +65,7 @@ class EstimatedDeliveryDate
 
     public function preparation($hour, $before, $after)
     {
-        $date = new DateTimeImmutable();
+        $date = new DateTime();
         $preparationHour = $date->createFromFormat('H:i', $hour, new DateTimeZone('UTC'));
 
         $this->preparation = $after;
@@ -97,13 +97,20 @@ class EstimatedDeliveryDate
 
     public function estimation()
     {
-        $preparationDate = $this->prepare($this->currentDate, $this->preparation);
-        $daysMin = $this->deliver($this->currentDate, $this->deliveryMin) + $preparationDate;
-        $daysMax = $this->deliver($this->currentDate, $this->deliveryMax) + $preparationDate;
+        $currentDate = clone $this->currentDate;
+        $preparationDate = $this->prepare($currentDate, $this->preparation);
 
+        $currentDate = clone $this->currentDate;
+        $daysMin = $this->deliver($currentDate, $this->deliveryMin) + $preparationDate;
 
-        $min = $this->currentDate->modify('+' . $daysMin . 'days');
-        $max = $this->currentDate->modify('+' . $daysMax . 'days');
+        $currentDate = clone $this->currentDate;
+        $daysMax = $this->deliver($currentDate, $this->deliveryMax) + $preparationDate;
+
+        $currentDate = clone $this->currentDate;
+        $min = $currentDate->modify('+' . $daysMin . 'days');
+
+        $currentDate = clone $this->currentDate;
+        $max = $currentDate->modify('+' . $daysMax . 'days');
 
         return array(
             'min' => $min->format('Y-m-d'),
@@ -111,11 +118,13 @@ class EstimatedDeliveryDate
         );
     }
 
-    private function prepare(DateTimeImmutable $date, $preparation)
+    private function prepare(DateTime $dateObj, $preparation)
     {
         $workingDays = 0;
 
         for($i=0;; $i++) {
+            $date = clone $dateObj;
+            
             $calendarDay = $date->modify('+' . $i . ' days');
 
             if(in_array($calendarDay->format('Y-m-d'), $this->vacations)) {
@@ -140,18 +149,20 @@ class EstimatedDeliveryDate
         $days = array('1' => 'lundi', '2' => 'mardi', '3' => 'mercredi', '4' => 'jeudi', '5' => 'vendredi', '6' => 'samedi', '7' => 'dimanche');
         $months = array('1' => 'janvier', '2' => 'février', '3' => 'mars', '4' => 'avril', '5' => 'mai', '6' => 'juin', '7' => 'juillet', '8' => 'août', '9' => 'septembre', '10' => 'octobre', '11' => 'novembre', '12' => 'décembre');
 
-        $date = new DateTimeImmutable();
+        $date = new DateTime();
         $minDate = $date->createFromFormat('Y-m-d', $dates['min']);
         $maxDate = $date->createFromFormat('Y-m-d', $dates['max']);
 
         return $days[$minDate->format('N')] . ' ' . $minDate->format('j') . ' ' . $months[$minDate->format('n')] . ' ' . $minDate->format('Y') . ' / ' . $days[$maxDate->format('N')] . ' ' . $maxDate->format('j') . ' ' . $months[$maxDate->format('n')] . ' ' . $minDate->format('Y');
     }
 
-    private function deliver(DateTimeImmutable $date, $delivery)
+    private function deliver(DateTime $dateObj, $delivery)
     {
         $workingDays = 0;
 
         for($i=0;; $i++) {
+            $date = clone $dateObj;
+
             $calendarDay = $date->modify('+' . $i . ' days');
 
             if(in_array($calendarDay->format('Y-m-d'), $this->deliveryVacations)) {
