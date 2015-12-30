@@ -6,8 +6,10 @@ Example usage:
 ```
 $currentDate = "2016-01-04 16:00"; //current date and time
 $estimatedDeliveryDate = new EstimatedDeliveryDate($currentDate, 'Y-m-d H:i');
-$estimatedDeliveryDate->delivery(0, 1); //days min/max for delivery
 $estimatedDeliveryDate->preparation('17:00', 4, 5); //preparation time, days needed to prepare if ordered before 17:00 (4 days) and after (>=) 17:00 (5 days)
+$estimatedDeliveryDate->preparationDaysOfWeek(1, 2, 3, 4, 5, 6);
+$estimatedDeliveryDate->delivery(0, 1); //days min/max for delivery
+$estimatedDeliveryDate->deliveryDaysOfWeek(1, 2, 3, 4, 5, 6);
 $estimatedDeliveryDate->vacations(['2016-01-05']); //sender not working days
 $estimatedDeliveryDate->deliveryVacations(['2016-01-06']); //delivery not working days
 

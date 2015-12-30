@@ -31,25 +31,25 @@ class EstimatedDeliveryDate
      * Vacations (shop owner)
      * @var array
      */
-    private $vacations = [];
+    private $vacations = array();
 
     /**
      * Vacations (delivery company)
      * @var array
      */
-    private $deliveryVacations = [];
+    private $deliveryVacations = array();
 
     /**
      * Days during which we prepare goods for delivery
      * @var array
      */
-    private $preparationDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
+    private $preparationDaysOfWeek = array(1,2,3,4,5); //1 is Monday, 5 is Friday
 
     /**
      * Delivery working days
      * @var array
      */
-    private $deliveryDaysOfWeek = [1,2,3,4,5]; //1 is Monday, 5 is Friday
+    private $deliveryDaysOfWeek = array(1,2,3,4,5); //1 is Monday, 5 is Friday
 
     public function __construct($currentDate = 'now', $format = 'Y-m-d')
     {
@@ -85,6 +85,16 @@ class EstimatedDeliveryDate
         $this->vacations = $vacations;
     }
 
+    public function preparationDaysOfWeek(array $days)
+    {
+        $this->preparationDaysOfWeek = $days;
+    }
+
+    public function workingDaysOfWeek(array $days)
+    {
+        $this->deliveryDaysOfWeek = $days;
+    }
+
     public function estimation()
     {
         $preparationDate = $this->prepare($this->currentDate, $this->preparation);
@@ -95,10 +105,10 @@ class EstimatedDeliveryDate
         $min = $this->currentDate->modify('+' . $daysMin . 'days');
         $max = $this->currentDate->modify('+' . $daysMax . 'days');
 
-        return [
+        return array(
             'min' => $min->format('Y-m-d'),
             'max' => $max->format('Y-m-d'),
-        ];
+        );
     }
 
     private function prepare(DateTimeImmutable $date, $preparation)
@@ -127,8 +137,8 @@ class EstimatedDeliveryDate
     //TODO: move to other class
     public function formatDate(array $dates)
     {
-        $days = ['1' => 'lundi', '2' => 'mardi', '3' => 'mercredi', '4' => 'jeudi', '5' => 'vendredi', '6' => 'samedi', '7' => 'dimanche'];
-        $months = ['1' => 'janvier', '2' => 'février', '3' => 'mars', '4' => 'avril', '5' => 'mai', '6' => 'juin', '7' => 'juillet', '8' => 'août', '9' => 'septembre', '10' => 'octobre', '11' => 'novembre', '12' => 'décembre'];
+        $days = array('1' => 'lundi', '2' => 'mardi', '3' => 'mercredi', '4' => 'jeudi', '5' => 'vendredi', '6' => 'samedi', '7' => 'dimanche');
+        $months = array('1' => 'janvier', '2' => 'février', '3' => 'mars', '4' => 'avril', '5' => 'mai', '6' => 'juin', '7' => 'juillet', '8' => 'août', '9' => 'septembre', '10' => 'octobre', '11' => 'novembre', '12' => 'décembre');
 
         $date = new DateTimeImmutable();
         $minDate = $date->createFromFormat('Y-m-d', $dates['min']);
